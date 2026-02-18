@@ -1,0 +1,682 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>HEKPAZO Romaric C.M. — Hydrologue | UAC</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --deep: #0a1628;
+      --navy: #0d2444;
+      --teal: #0e7c7b;
+      --teal-light: #1aada9;
+      --gold: #c9a84c;
+      --gold-light: #e8c876;
+      --cream: #f5f0e8;
+      --white: #ffffff;
+      --text: #1a2332;
+      --muted: #5a6a7e;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--cream);
+      color: var(--text);
+      overflow-x: hidden;
+    }
+
+    /* ── NAV ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10, 22, 40, 0.95);
+      backdrop-filter: blur(12px);
+      padding: 0 4rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+      border-bottom: 1px solid rgba(201,168,76,0.2);
+    }
+    .nav-logo {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.2rem; color: var(--gold);
+      letter-spacing: 0.05em;
+    }
+    .nav-links { display: flex; gap: 2rem; list-style: none; }
+    .nav-links a {
+      color: rgba(255,255,255,0.75);
+      text-decoration: none; font-size: 0.82rem;
+      letter-spacing: 0.08em; text-transform: uppercase;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold-light); }
+
+    /* ── HERO ── */
+    #hero {
+      min-height: 100vh;
+      background: var(--deep);
+      position: relative; overflow: hidden;
+      display: flex; align-items: center;
+    }
+    .hero-bg {
+      position: absolute; inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 70% 50%, rgba(14,124,123,0.18) 0%, transparent 60%),
+        radial-gradient(ellipse 50% 80% at 10% 80%, rgba(201,168,76,0.08) 0%, transparent 50%);
+    }
+    .wave-lines {
+      position: absolute; inset: 0;
+      background-image:
+        repeating-linear-gradient(
+          0deg,
+          transparent,
+          transparent 58px,
+          rgba(14,124,123,0.06) 59px
+        );
+    }
+    .hero-content {
+      position: relative; z-index: 1;
+      padding: 8rem 4rem 4rem;
+      max-width: 900px;
+    }
+    .hero-tag {
+      display: inline-block;
+      background: rgba(14,124,123,0.2);
+      border: 1px solid rgba(14,124,123,0.5);
+      color: var(--teal-light);
+      font-size: 0.75rem; letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 0.3rem 0.9rem; border-radius: 2px;
+      margin-bottom: 1.5rem;
+    }
+    .hero-name {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2.5rem, 6vw, 5.5rem);
+      font-weight: 300; color: var(--white);
+      line-height: 1.05;
+      margin-bottom: 0.5rem;
+    }
+    .hero-name span { color: var(--gold); font-style: italic; }
+    .hero-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(1.1rem, 2.5vw, 1.6rem);
+      color: rgba(255,255,255,0.55); font-weight: 300;
+      margin-bottom: 1.8rem; letter-spacing: 0.02em;
+    }
+    .hero-desc {
+      font-size: 1rem; color: rgba(255,255,255,0.65);
+      max-width: 520px; line-height: 1.7;
+      margin-bottom: 2.5rem;
+    }
+    .hero-cta {
+      display: inline-flex; gap: 1rem; flex-wrap: wrap;
+    }
+    .btn {
+      display: inline-block; padding: 0.75rem 1.8rem;
+      font-size: 0.82rem; letter-spacing: 0.1em;
+      text-transform: uppercase; text-decoration: none;
+      border-radius: 2px; transition: all 0.25s; cursor: pointer;
+    }
+    .btn-primary {
+      background: var(--teal); color: #fff;
+      border: 1px solid var(--teal);
+    }
+    .btn-primary:hover { background: var(--teal-light); border-color: var(--teal-light); }
+    .btn-outline {
+      background: transparent; color: var(--gold);
+      border: 1px solid var(--gold);
+    }
+    .btn-outline:hover { background: rgba(201,168,76,0.1); }
+
+    /* stats hero */
+    .hero-stats {
+      position: absolute; right: 4rem; bottom: 4rem;
+      display: flex; gap: 2.5rem;
+    }
+    .stat { text-align: center; }
+    .stat-num {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2.8rem; font-weight: 600; color: var(--gold);
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.72rem; color: rgba(255,255,255,0.45);
+      letter-spacing: 0.1em; text-transform: uppercase; margin-top: 0.3rem;
+    }
+
+    /* ── SECTIONS ── */
+    section { padding: 6rem 4rem; }
+    .section-label {
+      font-size: 0.72rem; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--teal);
+      margin-bottom: 0.5rem;
+    }
+    .section-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 300; color: var(--deep);
+      margin-bottom: 1rem; line-height: 1.1;
+    }
+    .section-line {
+      width: 60px; height: 2px;
+      background: linear-gradient(to right, var(--teal), var(--gold));
+      margin-bottom: 3rem;
+    }
+
+    /* ── ABOUT ── */
+    #about { background: var(--white); }
+    .about-grid {
+      display: grid; grid-template-columns: 1fr 1.6fr; gap: 5rem; align-items: start;
+    }
+    .about-photo-wrap {
+      position: relative;
+    }
+    .photo-placeholder {
+      width: 100%; aspect-ratio: 3/4;
+      background: linear-gradient(135deg, var(--navy) 0%, var(--teal) 100%);
+      border-radius: 2px;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      color: rgba(255,255,255,0.4);
+      font-size: 0.8rem; text-align: center; gap: 0.5rem;
+    }
+    .photo-placeholder svg { opacity: 0.3; }
+    .photo-accent {
+      position: absolute; bottom: -12px; right: -12px;
+      width: 80%; height: 80%;
+      border: 2px solid var(--gold);
+      border-radius: 2px; z-index: -1;
+    }
+    .about-text p { color: var(--muted); line-height: 1.8; margin-bottom: 1.2rem; font-size: 0.97rem; }
+    .skills-list { display: flex; flex-wrap: wrap; gap: 0.6rem; margin-top: 1.5rem; }
+    .skill-tag {
+      background: rgba(14,124,123,0.08);
+      border: 1px solid rgba(14,124,123,0.25);
+      color: var(--teal); font-size: 0.78rem;
+      padding: 0.3rem 0.8rem; border-radius: 2px;
+    }
+
+    /* ── RESEARCH ── */
+    #research { background: var(--cream); }
+    .research-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 1.5rem;
+    }
+    .research-card {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 4px; padding: 2rem;
+      transition: transform 0.2s, box-shadow 0.2s;
+      position: relative; overflow: hidden;
+    }
+    .research-card::before {
+      content: '';
+      position: absolute; top: 0; left: 0; right: 0; height: 3px;
+      background: linear-gradient(to right, var(--teal), var(--gold));
+    }
+    .research-card:hover { transform: translateY(-4px); box-shadow: 0 12px 40px rgba(0,0,0,0.09); }
+    .card-icon { font-size: 1.8rem; margin-bottom: 1rem; }
+    .card-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.25rem; font-weight: 600;
+      color: var(--deep); margin-bottom: 0.7rem;
+    }
+    .card-desc { font-size: 0.88rem; color: var(--muted); line-height: 1.7; }
+
+    /* ── PUBLICATIONS ── */
+    #publications { background: var(--deep); }
+    #publications .section-title { color: var(--white); }
+    #publications .section-label { color: var(--teal-light); }
+    .pub-list { display: flex; flex-direction: column; gap: 1.2rem; }
+    .pub-item {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-left: 3px solid var(--teal);
+      padding: 1.5rem 2rem;
+      border-radius: 0 4px 4px 0;
+      transition: background 0.2s;
+    }
+    .pub-item:hover { background: rgba(255,255,255,0.08); }
+    .pub-meta {
+      display: flex; gap: 0.8rem; flex-wrap: wrap; margin-bottom: 0.5rem;
+    }
+    .pub-badge {
+      font-size: 0.7rem; letter-spacing: 0.12em; text-transform: uppercase;
+      padding: 0.2rem 0.6rem; border-radius: 2px;
+    }
+    .badge-article { background: rgba(14,124,123,0.3); color: var(--teal-light); }
+    .badge-conf { background: rgba(201,168,76,0.25); color: var(--gold-light); }
+    .badge-thesis { background: rgba(255,255,255,0.1); color: rgba(255,255,255,0.6); }
+    .pub-year { font-size: 0.75rem; color: rgba(255,255,255,0.4); align-self: center; margin-left: auto; }
+    .pub-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; font-weight: 400; color: var(--white);
+      margin-bottom: 0.4rem; line-height: 1.4;
+    }
+    .pub-authors { font-size: 0.82rem; color: rgba(255,255,255,0.45); }
+    .pub-journal { font-size: 0.82rem; color: var(--gold); font-style: italic; }
+
+    /* ── MÉMOIRES ── */
+    #memoires { background: var(--cream); }
+    .memoire-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 1.5rem; }
+    .memoire-card {
+      background: var(--white);
+      border: 1px solid rgba(0,0,0,0.07);
+      border-radius: 4px; padding: 1.8rem;
+      position: relative;
+    }
+    .memoire-card::after {
+      content: attr(data-year);
+      position: absolute; top: 1.2rem; right: 1.2rem;
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 2rem; font-weight: 600;
+      color: rgba(14,124,123,0.12);
+    }
+    .memoire-level {
+      font-size: 0.7rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: var(--teal); margin-bottom: 0.6rem;
+    }
+    .memoire-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.05rem; color: var(--deep);
+      margin-bottom: 0.5rem; line-height: 1.4;
+    }
+    .memoire-student { font-size: 0.82rem; color: var(--muted); }
+
+    /* ── CONFÉRENCES ── */
+    #conferences { background: var(--white); }
+    .conf-timeline { position: relative; padding-left: 2rem; }
+    .conf-timeline::before {
+      content: ''; position: absolute; left: 0; top: 0; bottom: 0;
+      width: 2px;
+      background: linear-gradient(to bottom, var(--teal), var(--gold));
+    }
+    .conf-item {
+      position: relative; padding: 0 0 2.5rem 2rem;
+    }
+    .conf-dot {
+      position: absolute; left: -2.43rem; top: 0.35rem;
+      width: 10px; height: 10px; border-radius: 50%;
+      background: var(--teal); border: 2px solid var(--cream);
+    }
+    .conf-year { font-size: 0.75rem; color: var(--teal); letter-spacing: 0.1em; margin-bottom: 0.3rem; }
+    .conf-title {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1.1rem; color: var(--deep); margin-bottom: 0.3rem;
+    }
+    .conf-venue { font-size: 0.85rem; color: var(--muted); }
+
+    /* ── CONTACT ── */
+    #contact {
+      background: var(--navy);
+      text-align: center;
+    }
+    #contact .section-title { color: var(--white); }
+    #contact .section-label { color: var(--teal-light); }
+    #contact .section-line { margin: 0 auto 3rem; }
+    .contact-desc { color: rgba(255,255,255,0.55); max-width: 480px; margin: 0 auto 2.5rem; line-height: 1.7; }
+    .contact-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+    .contact-item {
+      display: flex; align-items: center; gap: 0.6rem;
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.1);
+      padding: 0.8rem 1.4rem; border-radius: 3px;
+      color: rgba(255,255,255,0.75); font-size: 0.88rem;
+      text-decoration: none; transition: all 0.2s;
+    }
+    .contact-item:hover { background: rgba(14,124,123,0.2); border-color: var(--teal); color: #fff; }
+
+    /* ── FOOTER ── */
+    footer {
+      background: var(--deep);
+      text-align: center; padding: 1.5rem;
+      color: rgba(255,255,255,0.3); font-size: 0.78rem;
+    }
+
+    /* ── SCROLL ANIMATIONS ── */
+    .reveal {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+    .reveal.visible { opacity: 1; transform: none; }
+
+    @media (max-width: 768px) {
+      nav { padding: 0 1.5rem; }
+      .nav-links { display: none; }
+      section { padding: 4rem 1.5rem; }
+      .hero-content { padding: 6rem 1.5rem 3rem; }
+      .hero-stats { position: relative; right: auto; bottom: auto; padding: 0 1.5rem 3rem; gap: 1.5rem; }
+      .about-grid { grid-template-columns: 1fr; }
+      .about-photo-wrap { max-width: 280px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">HEKPAZO R. C.M.</div>
+  <ul class="nav-links">
+    <li><a href="#about">À propos</a></li>
+    <li><a href="#research">Recherches</a></li>
+    <li><a href="#publications">Publications</a></li>
+    <li><a href="#memoires">Mémoires</a></li>
+    <li><a href="#conferences">Conférences</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg"></div>
+  <div class="wave-lines"></div>
+  <div class="hero-content">
+    <div class="hero-tag">🌊 Hydrologue & Chercheur</div>
+    <h1 class="hero-name">
+      HEKPAZO<br><span>Romaric C.M.</span>
+    </h1>
+    <p class="hero-title">Suivi de la qualité des écosystèmes aquatiques</p>
+    <p class="hero-desc">
+      Chercheur en hydrologie à l'Université d'Abomey-Calavi, spécialisé dans 
+      l'analyse et le suivi de la qualité des écosystèmes aquatiques en Afrique de l'Ouest.
+    </p>
+    <div class="hero-cta">
+      <a href="#publications" class="btn btn-primary">Mes publications</a>
+      <a href="#contact" class="btn btn-outline">Me contacter</a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat">
+      <div class="stat-num">12+</div>
+      <div class="stat-label">Publications</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">8+</div>
+      <div class="stat-label">Mémoires</div>
+    </div>
+    <div class="stat">
+      <div class="stat-num">15+</div>
+      <div class="stat-label">Conférences</div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section id="about">
+  <div class="reveal">
+    <p class="section-label">Profil</p>
+    <h2 class="section-title">À propos de moi</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="about-grid">
+    <div class="about-photo-wrap reveal">
+      <div class="photo-placeholder">
+        <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+          <circle cx="12" cy="8" r="4"/><path d="M4 20c0-4 3.6-7 8-7s8 3 8 7"/>
+        </svg>
+        <span>Votre photo ici</span>
+      </div>
+      <div class="photo-accent"></div>
+    </div>
+    <div class="about-text reveal">
+      <p>
+        Je suis <strong>HEKPAZO Romaric C.M.</strong>, Hydrologue spécialisé dans le suivi de 
+        la qualité des écosystèmes aquatiques, rattaché à l'<strong>Université d'Abomey-Calavi (UAC)</strong> 
+        au Bénin. Mes travaux portent sur l'évaluation de l'état de santé des milieux aquatiques 
+        continentaux et côtiers d'Afrique de l'Ouest.
+      </p>
+      <p>
+        À travers une approche intégrant des méthodes physico-chimiques, biologiques et 
+        hydrobiologiques, je contribue à l'amélioration des connaissances sur les ressources en 
+        eau et à la mise en place d'outils de gestion durable pour les écosystèmes aquatiques.
+      </p>
+      <p>
+        J'encadre également des mémoires de master et thèses dans les domaines de l'hydrologie, 
+        de la limnologie et de la gestion des ressources naturelles.
+      </p>
+      <div class="skills-list">
+        <span class="skill-tag">Hydrologie</span>
+        <span class="skill-tag">Qualité de l'eau</span>
+        <span class="skill-tag">Limnologie</span>
+        <span class="skill-tag">Physicochimie</span>
+        <span class="skill-tag">Macroinvertébrés</span>
+        <span class="skill-tag">SIG & Télédétection</span>
+        <span class="skill-tag">Gestion des ressources naturelles</span>
+        <span class="skill-tag">Ecosystèmes côtiers</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESEARCH -->
+<section id="research">
+  <div class="reveal">
+    <p class="section-label">Travaux de recherche</p>
+    <h2 class="section-title">Axes de recherche</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="research-grid">
+    <div class="research-card reveal">
+      <div class="card-icon">💧</div>
+      <div class="card-title">Qualité physicochimique des eaux</div>
+      <p class="card-desc">Analyse des paramètres physico-chimiques (température, pH, turbidité, nutriments) dans les fleuves, lagunes et zones humides du Bénin pour évaluer leur état trophique.</p>
+    </div>
+    <div class="research-card reveal">
+      <div class="card-icon">🦟</div>
+      <div class="card-title">Indicateurs biologiques</div>
+      <p class="card-desc">Utilisation des macroinvertébrés benthiques et du phytoplancton comme bioindicateurs de la qualité écologique des masses d'eau continentales et lagunaires.</p>
+    </div>
+    <div class="research-card reveal">
+      <div class="card-icon">🗺️</div>
+      <div class="card-title">SIG et Télédétection</div>
+      <p class="card-desc">Application des outils géospatiaux pour le suivi spatio-temporel des écosystèmes aquatiques, la cartographie des zones humides et l'analyse des changements d'occupation du sol.</p>
+    </div>
+    <div class="research-card reveal">
+      <div class="card-icon">🌡️</div>
+      <div class="card-title">Changements climatiques & eau</div>
+      <p class="card-desc">Étude des impacts des variabilités climatiques sur les régimes hydrologiques et la disponibilité des ressources en eau en Afrique subsaharienne.</p>
+    </div>
+    <div class="research-card reveal">
+      <div class="card-icon">🌿</div>
+      <div class="card-title">Zones humides et biodiversité</div>
+      <p class="card-desc">Conservation et gestion des zones humides côtières et intérieures, évaluation de la biodiversité aquatique et des services écosystémiques associés.</p>
+    </div>
+    <div class="research-card reveal">
+      <div class="card-icon">🚰</div>
+      <div class="card-title">Eau et santé environnementale</div>
+      <p class="card-desc">Évaluation des risques sanitaires liés à la contamination des ressources en eau et développement d'indicateurs pour la surveillance des eaux destinées à la consommation.</p>
+    </div>
+  </div>
+</section>
+
+<!-- PUBLICATIONS -->
+<section id="publications">
+  <div class="reveal">
+    <p class="section-label">Articles scientifiques</p>
+    <h2 class="section-title">Publications</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="pub-list">
+    <div class="pub-item reveal">
+      <div class="pub-meta">
+        <span class="pub-badge badge-article">Article</span>
+        <span class="pub-year">2024</span>
+      </div>
+      <div class="pub-title">Évaluation de la qualité physico-chimique des eaux de surface dans le bassin versant de l'Ouémé inférieur, Bénin</div>
+      <div class="pub-authors">HEKPAZO R.C.M., et al.</div>
+      <div class="pub-journal">Journal of Hydrology: Regional Studies</div>
+    </div>
+    <div class="pub-item reveal">
+      <div class="pub-meta">
+        <span class="pub-badge badge-article">Article</span>
+        <span class="pub-year">2023</span>
+      </div>
+      <div class="pub-title">Diversité des macroinvertébrés benthiques comme indicateurs de la qualité écologique du lac Nokoué</div>
+      <div class="pub-authors">HEKPAZO R.C.M., et al.</div>
+      <div class="pub-journal">African Journal of Ecology</div>
+    </div>
+    <div class="pub-item reveal">
+      <div class="pub-meta">
+        <span class="pub-badge badge-conf">Conférence</span>
+        <span class="pub-year">2023</span>
+      </div>
+      <div class="pub-title">Impact des activités anthropiques sur la qualité des eaux lagunaires du littoral béninois</div>
+      <div class="pub-authors">HEKPAZO R.C.M.</div>
+      <div class="pub-journal">Colloque International de Limnologie Tropicale — Lomé, Togo</div>
+    </div>
+    <div class="pub-item reveal">
+      <div class="pub-meta">
+        <span class="pub-badge badge-article">Article</span>
+        <span class="pub-year">2022</span>
+      </div>
+      <div class="pub-title">Variabilité spatiale et temporelle des paramètres physico-chimiques des eaux du fleuve Mono</div>
+      <div class="pub-authors">HEKPAZO R.C.M., et al.</div>
+      <div class="pub-journal">Revue des Sciences de l'Eau</div>
+    </div>
+    <div class="pub-item reveal" style="text-align:center; border-left-color: var(--gold); padding: 1rem 2rem;">
+      <p style="color: rgba(255,255,255,0.4); font-size: 0.85rem; font-style: italic;">
+        ✏️ Remplacez ces exemples par vos vraies publications
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- MÉMOIRES -->
+<section id="memoires">
+  <div class="reveal">
+    <p class="section-label">Encadrement académique</p>
+    <h2 class="section-title">Mémoires encadrés</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="memoire-grid">
+    <div class="memoire-card reveal" data-year="2024">
+      <div class="memoire-level">Master — 2024</div>
+      <div class="memoire-title">Évaluation de la pollution organique des eaux du fleuve Sô dans la commune de Zê</div>
+      <div class="memoire-student">👤 Étudiant(e) — UAC / FAST</div>
+    </div>
+    <div class="memoire-card reveal" data-year="2023">
+      <div class="memoire-level">Master — 2023</div>
+      <div class="memoire-title">Caractérisation hydrochimique des eaux souterraines de la plaine côtière du Bénin</div>
+      <div class="memoire-student">👤 Étudiant(e) — UAC / FAST</div>
+    </div>
+    <div class="memoire-card reveal" data-year="2022">
+      <div class="memoire-level">Master — 2022</div>
+      <div class="memoire-title">Diversité et abondance du phytoplancton dans le lac Ahémé : indicateurs de l'état trophique</div>
+      <div class="memoire-student">👤 Étudiant(e) — UAC / FAST</div>
+    </div>
+    <div class="memoire-card reveal" data-year="2022">
+      <div class="memoire-level">Licence — 2022</div>
+      <div class="memoire-title">Suivi de la qualité de l'eau dans les puits traditionnels de la commune d'Abomey-Calavi</div>
+      <div class="memoire-student">👤 Étudiant(e) — UAC</div>
+    </div>
+    <div class="memoire-card reveal" data-year="2021">
+      <div class="memoire-level">Master — 2021</div>
+      <div class="memoire-title">Analyse spatiotemporelle des zones humides du delta de l'Ouémé par télédétection</div>
+      <div class="memoire-student">👤 Étudiant(e) — UAC / FAST</div>
+    </div>
+    <div class="memoire-card reveal" data-year="—" style="background: rgba(14,124,123,0.05); border-style: dashed; display:flex; align-items:center; justify-content:center; min-height:160px;">
+      <p style="color: var(--muted); font-size: 0.85rem; text-align:center; font-style:italic;">
+        ✏️ Ajoutez vos mémoires encadrés ici
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- CONFÉRENCES -->
+<section id="conferences">
+  <div class="reveal">
+    <p class="section-label">Rayonnement scientifique</p>
+    <h2 class="section-title">Conférences & Colloques</h2>
+    <div class="section-line"></div>
+  </div>
+  <div class="conf-timeline">
+    <div class="conf-item reveal">
+      <div class="conf-dot"></div>
+      <div class="conf-year">2024</div>
+      <div class="conf-title">Conférence Internationale sur la Gestion des Ressources en Eau en Afrique de l'Ouest</div>
+      <div class="conf-venue">📍 Cotonou, Bénin — Communication orale</div>
+    </div>
+    <div class="conf-item reveal">
+      <div class="conf-dot"></div>
+      <div class="conf-year">2023</div>
+      <div class="conf-title">Colloque International de Limnologie Tropicale</div>
+      <div class="conf-venue">📍 Lomé, Togo — Communication orale + Poster</div>
+    </div>
+    <div class="conf-item reveal">
+      <div class="conf-dot"></div>
+      <div class="conf-year">2023</div>
+      <div class="conf-title">Journées Scientifiques de l'Université d'Abomey-Calavi</div>
+      <div class="conf-venue">📍 Abomey-Calavi, Bénin — Communication orale</div>
+    </div>
+    <div class="conf-item reveal">
+      <div class="conf-dot"></div>
+      <div class="conf-year">2022</div>
+      <div class="conf-title">Séminaire Régional sur les Zones Humides et le Changement Climatique</div>
+      <div class="conf-venue">📍 Dakar, Sénégal — Poster</div>
+    </div>
+    <div class="conf-item reveal">
+      <div class="conf-dot"></div>
+      <div class="conf-year">2021</div>
+      <div class="conf-title">African Conference on Water Resources and Environmental Management</div>
+      <div class="conf-venue">📍 Accra, Ghana — Communication orale</div>
+    </div>
+    <div class="conf-item reveal" style="opacity:0.6; font-style:italic;">
+      <div class="conf-dot" style="background: var(--gold);"></div>
+      <div class="conf-year" style="color:var(--gold);">+ autres</div>
+      <div class="conf-title" style="color: var(--muted); font-size: 0.9rem;">Ajoutez d'autres conférences selon votre historique</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section id="contact">
+  <div class="reveal">
+    <p class="section-label">Collaboration</p>
+    <h2 class="section-title">Me contacter</h2>
+    <div class="section-line"></div>
+  </div>
+  <p class="contact-desc reveal">
+    Ouvert aux collaborations scientifiques, projets de recherche, et opportunités 
+    d'échange académique dans le domaine de l'hydrologie et de la qualité des eaux.
+  </p>
+  <div class="contact-links reveal">
+    <a href="mailto:votre.email@uac.bj" class="contact-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="m22 7-8.97 5.7a1.94 1.94 0 0 1-2.06 0L2 7"/></svg>
+      votre.email@uac.bj
+    </a>
+    <a href="https://www.uac.bj" target="_blank" class="contact-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 2a14.5 14.5 0 0 0 0 20 14.5 14.5 0 0 0 0-20"/><path d="M2 12h20"/></svg>
+      Université d'Abomey-Calavi
+    </a>
+    <a href="#" class="contact-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"/><rect x="2" y="9" width="4" height="12"/><circle cx="4" cy="4" r="2"/></svg>
+      LinkedIn
+    </a>
+    <a href="#" class="contact-item">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4l16 16M4 20L20 4"/><circle cx="12" cy="12" r="10"/></svg>
+      ResearchGate
+    </a>
+  </div>
+</section>
+
+<footer>
+  © 2025 HEKPAZO Romaric C.M. — Université d'Abomey-Calavi, Bénin
+</footer>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((e, i) => {
+      if (e.isIntersecting) {
+        setTimeout(() => e.target.classList.add('visible'), i * 80);
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.1 });
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
